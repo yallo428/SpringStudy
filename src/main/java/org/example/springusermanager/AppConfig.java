@@ -1,6 +1,7 @@
 package org.example.springusermanager;
 
 
+import org.example.springusermanager.discount.DiscountPolicy;
 import org.example.springusermanager.discount.FixDiscountPolicy;
 import org.example.springusermanager.repository.MemoryMemberRepository;
 import org.example.springusermanager.service.MemberService;
@@ -10,15 +11,23 @@ import org.example.springusermanager.service.OrderServiceImpl;
 
 public class AppConfig {
 
+    private MemoryMemberRepository memberRepository() {
+        return new MemoryMemberRepository();
+    }
+
 
     public MemberService memberService(){
-        return new MemberServiceImpl(new MemoryMemberRepository());
+        return new MemberServiceImpl(memberRepository());
     }
 
     public OrderService orderService(){
         return new OrderServiceImpl(
-                new MemoryMemberRepository(),
-                new FixDiscountPolicy());
+                memberRepository(),
+                discountPolicy());
+    }
+
+    private DiscountPolicy discountPolicy() {
+        return new FixDiscountPolicy();
     }
 
 

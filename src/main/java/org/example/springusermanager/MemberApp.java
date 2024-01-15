@@ -3,18 +3,22 @@ package org.example.springusermanager;
 import org.example.springusermanager.member.Grade;
 import org.example.springusermanager.member.Member;
 import org.example.springusermanager.service.MemberService;
-import org.example.springusermanager.service.MemberServiceImpl;
+import org.example.springusermanager.service.OrderService;
+import org.example.springusermanager.order.Order;
 
 public class MemberApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
-        Member member = new Member(1L, "membeerA", Grade.VIP);
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
 
+        OrderService orderService = appConfig.orderService();
+
+        Member member = new Member(1L, "membeerA", Grade.VIP);
         memberService.join(member);
 
-        Member findMember = memberService.findMember(1L);
+        Order order = orderService.createOrder(member.getId(), "itemA", 10000);
 
         System.out.println("member = " + member);
-        System.out.println("findMember = " + findMember);
+        System.out.println("findMember = " + order);
     }
 }
